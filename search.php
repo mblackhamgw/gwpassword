@@ -18,6 +18,7 @@
         session_start();
         $c = $_SESSION['curl'];
         $dbrole = $_SESSION['role'];
+        $dbuser = $_SESSION['dbuser'];
     ?>
 </head
 <body>
@@ -28,6 +29,11 @@
             
             <div class="left">
                 <h2 style="color:#ebebeb">GroupWise Password Change</h2>
+            </div>
+            <div class="right">
+                <div class="align-right">
+                    <p><strong><?php echo $dbuser;?> | <a href="changeadminpwd.php">Change Password</a> | <a href="logout.php">Logout</a></strong></p>
+                </div>
             </div>
         </div>
         
@@ -41,7 +47,7 @@
                         <li class="b1"><a class="icon config" href="search.php">User Search</a></li>
 
                          <?php
-                         if (isset($dbrole) && $dbrole == "SUPERADMIN"){
+                         if (isset($dbrole) && $dbrole == "Administrator"){
                         echo '<ul><li class="b1"><a class="icon config" href="adduser.php">Add Administrator</a></li></ul>';
                          }
                         ?>

@@ -8,7 +8,7 @@ class gw {
     public $baseurl;
 
     public function __construct($appdir) {
-        $db = new SQLite3($appdir . '/config/helpdesk.db') or die("Unable to open DB");
+        $db = new SQLite3($appdir . '/db/config.db') or die("Unable to open DB");
         $result = $db->query('SELECT * FROM gw');
         While ($row = $result->fetchArray())
         {
@@ -18,6 +18,7 @@ class gw {
             $this->gwpass = "{$row['GWPASS']}";
         }
         $this->baseurl = "https://$this->gwhost:$this->gwport";
+        $db->close();
     }
 
     function checkLdap($po){

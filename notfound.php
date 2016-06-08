@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>GroupWise Helpdesk</title>
+<title>GroupWise Password Change</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/navi.css" media="screen" />
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -15,6 +15,7 @@ $(function(){
 <?php 
     session_start();
     $dbrole = $_SESSION['role'];
+    $dbuser = $_SESSION['dbuser'];
     $gwid = $_SESSION['gwid'];
 ?>
 </script>
@@ -27,6 +28,11 @@ $(function(){
             <div class="left">
                 <h2 style="color:#ebebeb">GroupWise Password Change</h2>
             </div>
+            <div class="right">
+                <div class="align-right">
+                    <p><strong><?php echo $dbuser;?> | <a href="logout.php">Logout</a></strong></p>
+                </div>
+            </div>
         </div>
         <div id="nav"></div>
 	<div id="content">
@@ -36,7 +42,7 @@ $(function(){
                     <ul id="home">
                         <li class="b1"><a class="icon config" href="search.php">User Search</a></li>
                          <?php
-                            if (isset($dbrole) && $dbrole == "SUPERADMIN"){
+                            if (isset($dbrole) && $dbrole == "Administrator"){
                             echo '<ul><li class="b1"><a class="icon config" href="adduser.php">Add Administrator</a></li></ul>';
                             }
                         ?>

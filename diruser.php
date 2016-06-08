@@ -3,14 +3,18 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="author" content="Paweł 'kilab' Balicki - kilab.pl" />
-<title>GroupWise Helpdesk</title>
+<title>GroupWise Password Change</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/navi.css" media="screen" />
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <?php 
     session_start();
+    include('lib/logger.php');
+    $log = new Logging();
     $dbrole = $_SESSION['role'];
+    $dbuser = $_SESSION['dbuser'];
     $gwid = $_SESSION['gwid'];
+    
 ?>
 </head>
 <body>
@@ -20,6 +24,11 @@
                 <div class="left">
                     <h2 style="color:#ebebeb">GroupWise Password Change</h2>
                 </div>
+                <div class="right">
+                <div class="align-right">
+                    <p><strong><?php echo $dbuser;?> | <a href="changeadminpwd.php">Change Password</a> | <a href="logout.php">Logout</a></strong></p>
+                </div>
+            </div>
             </div>
             <div id="nav"></div>
             <div id="content">
@@ -29,7 +38,7 @@
                         <ul id="home">
                             <li class="b1"><a class="icon config" href="search.php">User Search</a></li>
                              <?php
-                                if (isset($dbrole) && $dbrole == "SUPERADMIN"){
+                                if (isset($dbrole) && $dbrole == "Administrator"){
                                 echo '<ul><li class="b1"><a class="icon config" href="adduser.php">Add Administrator</a></li></ul>';
                                 }
                             ?>
@@ -41,6 +50,10 @@
                 <div class="full_w">
                     <div class="h_title">Directory User </div>
                     <h3>User: <?php echo $gwid; ?>, is associated to a directory and the post office is set for LDAP Authentication </h3>
+                    <?php $log->write($gwid . ' is a directory associated user with PO set for LDAP Authentication', $dbuser);
+                          $log->write('Password Change disabled', $dbuser);
+                          $log->close();
+                    ?>
                     <h3>Setting GroupWise Password is disabled</h3>
                     </br>
                     <h3>

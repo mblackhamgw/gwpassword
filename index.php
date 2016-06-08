@@ -13,12 +13,16 @@
 <div class="wrap">
     <?php
         include("lib/gwlib.php");
+        include("lib/logger.php");
+        include("lib/sqllib.php");
         session_start();
         $appdir = getcwd();
         $_SESSION['appdir'] = $appdir;
-        $db = new SQLite3('config/helpdesk.db') or die("Unable to open DB");
+        $db = new sqllib();
         $c = new gw($appdir) or die("SOMETHING WRONG");
         $_SESSION['curl'] = $c;
+        $log = new Logging();
+        
     ?>
     <div id="header">
         <div id="top">
@@ -47,12 +51,11 @@
                             <?php
                                 if (isset($_POST['submit'])){
                                     $user = $_POST['username'];
-                                    $query = 'Select * FROM users WHERE USERID="' . $user . '"';
-
-                                    $result = $db->query($query);
+                                    $query = 'Select * FROM users WHERE USERID="' . $user. '";';
+                                    $result = $db->dbquery($query);
                                     While ($row = $result->fetchArray())
                                     {
-                                        #echo "{$row['USERID']}";
+                                        echo "{$row['USERID']}";
                                         $dbuser = "{$row['USERID']}";
                                         $dbpass = "{$row['PASSWORD']}";
                                         $dbrole = "{$row['ROLE']}";
@@ -60,6 +63,9 @@
                                     if ($_POST['username'] == $dbuser && $_POST['pass'] == $dbpass) {
                                         if ($gwlogin == 0) {
                                              $_SESSION['role'] = $dbrole;
+                                             $_SESSION['dbuser'] = $dbuser;
+                                             $log->write("Admin: " . $dbuser . " logged in", $dbuser);
+                                             $log->close();
                                             echo "<script>location.replace('search.php');</script>";
                                         }
                                     }

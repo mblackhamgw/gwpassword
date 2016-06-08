@@ -7,12 +7,9 @@
 <link rel="stylesheet" type="text/css" href="css/navi.css" media="screen" />
 <title>GroupWise Password Change</title>
 <?php
-    include("lib/gwlib.php");
-    include("lib/logger.php");
+        include("lib/logger.php");
     $log = new Logging();
     session_start();
-    $c = $_SESSION['curl'];
-    $gwuser = $_SESSION['gwuser'];
     $dbrole = $_SESSION['role'];
     $dbuser = $_SESSION['dbuser'];
 ?>
@@ -48,7 +45,7 @@
 		<div id="main">
                     <div class="clear"></div>
 			<div class="full_w">
-                            <div class="h_title">Change Password for <b> <?php echo $gwuser['name'] ?></b></div>
+                            <div class="h_title">Change Password for <b> <?php echo $dbuser; ?></b></div>
                             <form id="change" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
                                 <label for="pwd1">Enter New Password:</label>
                                 <input id="pwd1" name="pwd1" type="password" class="text" />
@@ -60,24 +57,16 @@
                             <?php
                                 if (isset($_POST['submit'])){
                                     if ($_POST['pwd1'] == $_POST['pwd2']) {
-                                        $results = $c->changePwd($gwuser['@url'], $_POST['pwd1']);
-                                        if ($results == 0){
-                                            echo "<h3>Password Changed for " . $gwuser['name'] . "</h3>";
-                                            $log->write("GroupWise password changed for " . $gwuser['name'], $dbuser);
-                                            $log->close();
-                                            echo "<h3><a href='search.php'>Search for new user</a></h3>";
-                                        }
-                                        else {
-                                            echo "<h3>Password Change Failed</h3>";
-                                            $log->write("GroupWise password change for " . $gwuser['name'] . "failed", $dbuser);
-                                            $log->close();
-                                            
-                                        }
-                                        
+                                        require_once('lib/sqllib.php');
+                                        $db = new sqllib();
+                                        $results = $db->changepwd($dbuser, $_POST['pwd1']);
+                                        echo "<h3>Password Changed</h3>";
+                                        $log->write($dbuser . "changed password", $dbuser);
+                                        $log->close();
+                                        echo "<h3><a href='search.php'>Search for new user</a></h3>";
                                     }
                                     else {
                                         echo "<h3>Passwords do not match, Re-Enter passwords<h3>";
-                                        
                                     }
                                 }
                             ?>
