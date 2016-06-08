@@ -15,6 +15,9 @@ class Logging {
     private $log_file, $fp;
     
     public function __construct() {
+        if (!file_exists('logs')){
+            mkdir('logs', 0777);
+        }
         $this->log_file = "logs/" . @date('m-d-Y') . ".log";
   
     }
