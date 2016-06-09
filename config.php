@@ -9,6 +9,9 @@
     <?php
         include('lib/sqllib.php');
         $db = new sqllib();
+		if (!file_exists('db')){
+            mkdir('db', 0777);
+        }
     ?>
 </head>
 <body>
