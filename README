@@ -1,0 +1,42 @@
+GroupWise Password Change 
+
+This is a web application to allow changing of GroupWise passswords without needing
+GroupWise System Administration rights.  This app allows an administrator to add
+user accounts to allow them to access this applications.  There are 2 administrator
+roles for this application,  Administrator and PasswordAdmin.  The Administrator role
+allows addition of other accounts.   
+
+
+Requirements:
+NOTE:  only tested on OpenSUSE
+
+1.  Linux server with Apache installed with the apache-mod-php5 installed and enabled
+2.  php5 with the following extensions:
+    php5-json
+    php5-curl
+    php5-sqlite
+    
+
+Installation and Configuration:
+
+Extract zip and copy contents to a directory on your Apache document root directory, 
+i.e., /srv/www/htdocs/gwpassword for OpenSuse.  Then change ownership of the the
+directory and files to the user that runs Apache.  For OpenSuse:
+
+chown -R wwwrun /srv/www/htdocs/gwpassword
+
+To configure the system,  go to http://yourserver/gwpassword/config.php
+
+There are 2 sections to configure,  the initial administrator credentials and the 
+GroupWise admin service information.
+
+1. Enter and Administrator name/password.
+
+2. Enter IP Address or hostname and port of your GroupWise admin server.  It is 
+recommended that you this is for your GroupWise primary domain.  
+3. Enter credentials for a GroupWise system administrator.  
+
+All data from the configuration is is stored in a sqlite db file, gwpassword/db/config.db.
+After configuration is complete,  you should rename or delete the config.php.  If 
+you run the config.php page again,  all data from the existing config.db will
+be overwritten.
