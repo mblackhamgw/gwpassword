@@ -30,10 +30,10 @@ To configure the system,  go to http://yourserver/gwpassword/config.php
 There are 2 sections to configure,  the initial administrator credentials and the 
 GroupWise admin service information.
 
-1. Enter and Administrator name/password.
+1. Enter an Administrator name/password.
 
 2. Enter IP Address or hostname and port of your GroupWise admin server.  It is 
-recommended that you this is for your GroupWise primary domain.  
+recommended that this is for your GroupWise primary domain.  
 3. Enter credentials for a GroupWise system administrator.  
 
 All data from the configuration is is stored in a sqlite db file, gwpassword/db/config.db.
