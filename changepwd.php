@@ -12,7 +12,14 @@
     $log = new Logging();
     session_start();
     $c = $_SESSION['curl'];
-    $gwuser = $_SESSION['gwuser'];
+    if (isset($_POST['gwusername'])){
+        $gwusername = $_POST['gwusername'];
+        $gwuserurl = $_POST['gwuserurl'];
+    }
+    elseif (isset($_SESSION['gwuser'])) {
+        $gwusername = $_SESSION['gwuser']['name'];
+        $gwuserurl = $_SESSION['gwuser']['@url'];
+    }
     $dbrole = $_SESSION['role'];
     $dbuser = $_SESSION['dbuser'];
 ?>
@@ -48,42 +55,46 @@
 		<div id="main">
                     <div class="clear"></div>
 			<div class="full_w">
-                            <div class="h_title">Change Password for <b> <?php echo $gwuser['name'] ?></b></div>
+                            <div class="h_title">Change Password for <b> <?php echo $gwusername;?></b></div>
                             <form id="change" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
                                 <label for="pwd1">Enter New Password:</label>
                                 <input id="pwd1" name="pwd1" type="password" class="text" />
                                 <label for="pwd2">Re-enter Password:</label>
                                 <input id="pwd2" name="pwd2" type="password" class="text" />
+                                <input name="gwuserurl" value="<?php echo $gwuserurl;?>" type="hidden"/>
+                                <input name="gwusername" value="<?php echo $gwusername;?>" type="hidden"/>
                                 <div class="sep"></div>
                                 <button type="submit" class="ok" name="submit">Set Password</button>
                             </form>
                             <?php
                                 if (isset($_POST['submit'])){
-                                    if ($_POST['pwd1'] == $_POST['pwd2']) {
-                                        $results = $c->changePwd($gwuser['@url'], $_POST['pwd1']);
-                                        if ($results == 0){
-                                            echo "<h3>Password Changed for " . $gwuser['name'] . "</h3>";
-                                            $log->write("GroupWise password changed for " . $gwuser['name'], $dbuser);
-                                            $log->close();
-                                            echo "<h3><a href='search.php'>Search for new user</a></h3>";
+                                        if ($_POST['pwd1'] == $_POST['pwd2']) {
+                                            $results = $c->changePwd($_POST['gwuserurl'], $_POST['pwd1']);
+                                            if ($results == 0){
+                                                echo '<div class="n_ok"><p>';
+                                                echo "Password Changed for " . $_POST['gwusername'] ;
+                                                echo '</p></div>';
+                                                $log->write("GroupWise password changed for " . $_POST['gwusername'], $dbuser);
+                                                $log->close();
+                                                echo "<h3><a href='search.php'>Search for new user</a></h3>";
+                                            }
+                                            else {
+                                                echo '<div class="n_error"><p>';
+                                                echo "Password Change Failed";
+                                                echo '</p></div>';
+                                                $log->write("GroupWise password change for " . $_POST['gwusername'] . "failed", $dbuser);
+                                                $log->close();
+                                            }
                                         }
                                         else {
-                                            echo "<h3>Password Change Failed</h3>";
-                                            $log->write("GroupWise password change for " . $gwuser['name'] . "failed", $dbuser);
-                                            $log->close();
-                                            
+                                            echo '<div class="n_error"><p>';
+                                            echo "Passwords do not match, Re-Enter passwords";
+                                            echo '</p></div>';
                                         }
-                                        
-                                    }
-                                    else {
-                                        echo "<h3>Passwords do not match, Re-Enter passwords<h3>";
-                                        
-                                    }
                                 }
                             ?>
 			</div>
 		</div>
-
-</div>
+    </div>
 </body>
 </html>

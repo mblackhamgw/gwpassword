@@ -69,13 +69,14 @@
                   if (isset($_POST['submit'])) {
                       //sets base url to gw server
                       #$baseurl = "https://$gwhost:$gwport";
-                      // gets default user pwd
                       $gwid = $_POST['gwid'];
-                      $users = $c->getUser($gwid);
+                      $users = $c->getUsers($gwid);
+					  
                       if ($users == 1) {
-                          $_SESSION['gwid'] = $gwid;
-                          echo "<script>location.replace('notfound.php');</script>";
+                        $_SESSION['gwid'] = $gwid;
+                        echo "<script>location.replace('notfound.php');</script>";
                       }
+
                       else {
                           $_SESSION['userlist'] = $users;
                           echo "<script>location.replace('userlist.php');</script>";

@@ -15,6 +15,16 @@
     $dbuser = $_SESSION['dbuser'];
     $c = $_SESSION['curl'];
 ?>
+<script language="javascript">
+$(document).ready(function(){
+	$("#button").click ( function()
+	{
+		alert('button clicked');
+	}
+	);
+)};
+	
+</script>
 </head>
     <body>
         <div class="wrap">
@@ -49,41 +59,62 @@
                         <div class="clear"></div>
                             <div class="full_w">
                                 <div class="h_title">GroupWise Users </div>
-                                <table>
+                                
+                                    <?php
+                                    unset($_SESSION['gwuser']);
+                                    unset($_SESSION['userlist']);
+                                    if (count($users) == 1){
+                                        
+                                        $_SESSION['gwuser'] = $users[0];
+                                        $ldap = $c->checkLdap($gwuser['postOfficeName']);
+                                    
+                                        if ($ldap == 1 && isset($gwuser['ldapDn'])) {
+                                               
+                                                echo "<script>location.replace('diruser.php');</script>";
+                                            
+                                        }
+                                        else {
+                                            echo "<script>location.replace('changepwd.php');</script>";
+                                        }
+                                    }
+                                    else {
+                                    ?>
+                                    <table>
+                                    <tr>
                                     <th>Userid</th>
                                     <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Post Office</th>
-                                    <th>Change Password</th>
+                                    <th></th>
+                                    </tr>
                                     <?php
-                                    foreach($users as $gwuser){
-                                        $ldap = $c->checkLdap($gwuser['postOfficeName']);
-                                        echo "<tr>";
-                                        echo "<td>" . $gwuser['name'] . "</td><td>" .  $gwuser['surname'] . "</td><td>" .  $gwuser['givenName'] . "</td>";
-                                        echo "<td>" . $gwuser['postOfficeName'] . "</td>";
-                                        if ($ldap == 1 && isset($gwuser['ldapDn'])) {
-                                            if (count($users) == 1){
-                                                $_SESSION['gwid'] = $gwuser['name'];
-                                                echo "<script>location.replace('diruser.php');</script>";
-                                            }
-                                            else {
-                                                echo "<td>Directory associated user and PO is set for LDAP AUTH</td></tr>";
-                                            }
-                                        }
-                                        else {
-                                            $_SESSION[gwuser] = $gwuser;
-                                            if (count($users) == 1) {
-                                                echo "<script>location.replace('changepwd.php');</script>";
-                                            }
-                                            echo "<td><button onclick='location.href=\"changepwd.php\"' name=\"" . $gwuser['name'] . "pwd\">Change Pwd</button></td></tr>";
+                                        foreach($users as $gwuser){
+                                    ?>
+                                        <form name="<?php echo $gwuser['name'];?>" method="POST" action="changepwd.php">
+                                            <input name="gwusername" value="<?php echo $gwuser['name'];?>" type="hidden">
+                                            <input name="gwuserurl" value="<?php echo $gwuser['@url'];?>" type="hidden">
+                                            <tr>
+                                                <?php
+                                                    echo "<td>" . $gwuser['name'] . "</td><td>" .  $gwuser['surname'] . "</td><td>" .  $gwuser['givenName'] . "</td>";
+                                                    echo "<td>" . $gwuser['postOfficeName'] . "</td>";
+                                                    
+                                            
+                                                    $ldap = $c->checkLdap($gwuser['postOfficeName']);
+                                                    if ($ldap == 1 && isset($gwuser['ldapDn'])) {
+                                                        echo "<td>Directory associated user and PO is set for LDAP AUTH</td></tr>";
+                                                    }
+                                                    else {
+                                                        echo "<td><button onclick='location.href=\"changepwd.php\"' name=\"" . $gwuser['name'] . "pwd\"'>Change Pwd</button></td></tr>";
+                                                    }
+                                            echo "</form>";
+                                            echo "</td>";
                                         }
                                     }
                                     ?>
                                 </table>
-                
                             </div>  
-        
                     </div>
             </div>
+
 </body>
 </html>
