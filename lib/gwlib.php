@@ -24,20 +24,28 @@ class gw {
     function checkLdap($po){
         $url = $this->baseurl . "/gwadmin-service/list/post_office?name=" . $po;
         $podata = $this->gwGet($url);
-        #var_dump($podata[0]['securitySettings'][1]);
-        if ($podata[0]['securitySettings'][1] == 'LDAP') {
+                if ($podata[0]['securitySettings'][1] == 'LDAP') {
             return 1;
         }
         else {
             return 0;
         }
     }
-
-    function getUser($gwid) {
-        $url = $this->baseurl . "/gwadmin-service/list/user?filter=externalRecord%20ne%20true%20and%20name%20eq%20'" . $gwid . "'";
-        $userdata = $this->gwGet($url);
-        return $userdata;
-    }
+	
+	function getUsers($gwid){
+            $url = $this->baseurl . "/gwadmin-service/system/search?text=" . $gwid;
+	    $userdata = $this->gwGet($url);
+		foreach($userdata as $user) {
+                    $userUrl = $this->baseurl . $user['@url'];
+                    $data = $this->gwGet($userUrl);
+                    if (strpos($user['id'], 'USER') !== false){
+                        if ($data['externalRecord'] != 'true') {
+                            $userlist[] = $data;
+                        }
+                    }
+                }
+		return $userlist;
+	}
 
     function gwGet($uri) {
         $opts = array(
@@ -56,17 +64,20 @@ class gw {
 
         $curl = curl_init($uri);
         curl_setopt_array($curl, $opts);
-
         $results = curl_exec($curl);
         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $header = substr($results, 0, $header_size);
         $body = substr($results, $header_size);
         $data = json_decode($body, true);
-        if(isset($data['object'])){
+		if(isset($data['object'])){
             return $data['object'];
         }
+		elseif(isset($data['name'])){
+			return $data;
+		}
         else{
-            return 1;
+			
+			return 1;
         }
     }
 
@@ -141,11 +152,5 @@ class gw {
         }
     }
 }
-
-#$c = new gw("151.155.136.215", "9710", "admin", "novell");
-#echo $c->baseurl;
-#$x = $c->checkLdap('provo');
-#echo $x;
-
 
 ?>
