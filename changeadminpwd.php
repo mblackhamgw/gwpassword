@@ -52,7 +52,7 @@
                                 <label for="pwd2">Re-enter Password:</label>
                                 <input id="pwd2" name="pwd2" type="password" class="text" />
                                 <div class="sep"></div>
-                                <button type="submit" class="ok" name="submit">Set Password</button>
+                                <button type="submit" class="ok" name="submit">Change Password</button>
                             </form>
                             <?php
                                 if (isset($_POST['submit'])){
@@ -60,13 +60,17 @@
                                         require_once('lib/sqllib.php');
                                         $db = new sqllib();
                                         $results = $db->changepwd($dbuser, $_POST['pwd1']);
-                                        echo "<h3>Password Changed</h3>";
+                                        echo '<div class="n_ok"><p>';
+                                        echo "Password Changed";
+                                        echo '</p></div>';
                                         $log->write($dbuser . "changed password", $dbuser);
                                         $log->close();
                                         echo "<h3><a href='search.php'>Search for new user</a></h3>";
                                     }
                                     else {
-                                        echo "<h3>Passwords do not match, Re-Enter passwords<h3>";
+                                        echo '<div class="n_error"><p>';
+                                        echo "Passwords do not match, Re-Enter passwords";
+                                        echo '</p></div>';
                                     }
                                 }
                             ?>
