@@ -67,14 +67,11 @@ $(document).ready(function(){
                                     unset($_SESSION['gwuser']);
                                     unset($_SESSION['userlist']);
                                     if (count($users) == 1){
-                                        
-                                        $_SESSION['gwuser'] = $users[0];
+                                        $gwuser = $users[0];
+                                        $_SESSION['gwid'] = $gwuser['name'];
                                         $ldap = $c->checkLdap($gwuser['postOfficeName']);
-                                    
                                         if ($ldap == 1 && isset($gwuser['ldapDn'])) {
-                                               
-                                                echo "<script>location.replace('diruser.php');</script>";
-                                            
+                                            echo "<script>location.replace('diruser.php');</script>";
                                         }
                                         else {
                                             echo "<script>location.replace('changepwd.php');</script>";

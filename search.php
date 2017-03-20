@@ -61,12 +61,8 @@
 		<div class="h_title">GroupWise Object Search</div>
                 <?php 
                     if(!isset($dbrole)){
-                    echo "not";
-                    echo "<script>location.replace('index.php');</script>";
-                    
+                        echo "<script>location.replace('index.php');</script>";
                     }
-                    
-                
                 ?>
                 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="searchform">
                   <label for="gwid">GroupWise ID </label>

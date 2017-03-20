@@ -48,16 +48,20 @@
             <div id="main">
             <div class="clear"></div>
                 <div class="full_w">
-                    <div class="h_title">Directory User </div>
-                    <h3>User: <?php echo $gwid; ?>, is associated to a directory and the post office is set for LDAP Authentication </h3>
-                    <?php $log->write($gwid . ' is a directory associated user with PO set for LDAP Authentication', $dbuser);
+                    <div class="h_title">Directory User</div>
+                    <div class="n_error"><p>
+                    User: <?php echo $gwid; ?>, is associated to a directory and the post office is set for LDAP Authentication.                  
+                         <?php $log->write($gwid . ' is a directory associated user and PO set for LDAP Authentication', $dbuser);
                           $log->write('Password Change disabled', $dbuser);
                           $log->close();
-                    ?>
-                    <h3>Setting GroupWise Password is disabled</h3>
+                          ?>
+                    <br>
+                    Setting or changing GroupWise Password is disabled.
                     </br>
+                        </p>
+                    </div>
                     <h3>
-                        <a href="search.php">Search for another user</a>
+                        <button onclick="window.location.href='search.php'">Search for another user</button>
                     </h3>
                 </div>
             </div>
