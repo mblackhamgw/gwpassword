@@ -61,6 +61,9 @@ $(document).ready(function(){
                                 <div class="h_title">GroupWise Users </div>
                                 
                                     <?php
+                                        if(!isset($dbrole)){
+                                            echo "<script>location.replace('index.php');</script>";
+                                        }
                                     unset($_SESSION['gwuser']);
                                     unset($_SESSION['userlist']);
                                     if (count($users) == 1){

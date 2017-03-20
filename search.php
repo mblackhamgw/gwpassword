@@ -19,6 +19,7 @@
         $c = $_SESSION['curl'];
         $dbrole = $_SESSION['role'];
         $dbuser = $_SESSION['dbuser'];
+        
     ?>
 </head
 <body>
@@ -58,6 +59,15 @@
 	    <div class="clear"></div>
 	    <div class="full_w">
 		<div class="h_title">GroupWise Object Search</div>
+                <?php 
+                    if(!isset($dbrole)){
+                    echo "not";
+                    echo "<script>location.replace('index.php');</script>";
+                    
+                    }
+                    
+                
+                ?>
                 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="searchform">
                   <label for="gwid">GroupWise ID </label>
                   <input type="text" size="40" name="gwid"</input>

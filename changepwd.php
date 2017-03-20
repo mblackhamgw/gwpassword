@@ -55,6 +55,11 @@
 		<div id="main">
                     <div class="clear"></div>
 			<div class="full_w">
+                            <?php 
+                                if(!isset($dbrole)){
+                                    echo "<script>location.replace('index.php');</script>";
+                                }
+                            ?>
                             <div class="h_title">Change Password for <b> <?php echo $gwusername;?></b></div>
                             <form id="change" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
                                 <label for="pwd1">Enter New Password:</label>

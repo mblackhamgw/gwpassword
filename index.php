@@ -55,7 +55,7 @@
                                     $result = $db->dbquery($query);
                                     While ($row = $result->fetchArray())
                                     {
-                                        echo "{$row['USERID']}";
+                                        //echo "{$row['USERID']}";
                                         $dbuser = "{$row['USERID']}";
                                         $dbpass = "{$row['PASSWORD']}";
                                         $dbrole = "{$row['ROLE']}";
@@ -70,7 +70,8 @@
                                         }
                                     }
                                     else {
-                                        echo "<div class='sep'></div><h3>Login Failed, Try again.</h3><p></br></p>";
+                                        echo "<div class='sep'></div>";
+                                        echo '<div class="n_error"><p>Login Failed, Try again.</p></div>';
                                     }
                                 }
                             ?>
