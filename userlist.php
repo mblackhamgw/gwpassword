@@ -74,6 +74,8 @@ $(document).ready(function(){
                                             echo "<script>location.replace('diruser.php');</script>";
                                         }
                                         else {
+                                            $_SESSION['gwuser'] = $users[0];
+                                            //var_dump($users[0]['name']);
                                             echo "<script>location.replace('changepwd.php');</script>";
                                         }
                                     }

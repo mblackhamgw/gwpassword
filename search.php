@@ -78,7 +78,7 @@
                       $gwid = $_POST['gwid'];
                       $users = $c->getUsers($gwid);
 					  
-                      if ($users == 1) {
+                      if ($users == 0) {
                         $_SESSION['gwid'] = $gwid;
                         echo "<script>location.replace('notfound.php');</script>";
                       }
